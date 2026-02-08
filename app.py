@@ -10,6 +10,7 @@ import os
 import sys
 from pathlib import Path
 
+
 # ML imports
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -175,6 +176,7 @@ class FakeNewsPredictor:
         if not cleaned:
             return {
                 'prediction': 'Unknown',
+
                 'confidence': 0.0,
                 'error': 'Text too short'
             }
@@ -189,6 +191,7 @@ class FakeNewsPredictor:
             'fake_probability': float(confidence[1]) * 100,
             'real_probability': float(confidence[0]) * 100
         }
+predictor = FakeNewsPredictor()
 
 
 # ============================================================================
@@ -277,7 +280,6 @@ def main():
         # Web mode
         global predictor
         try:
-            predictor = FakeNewsPredictor()
             print("\n🌐 Starting web server...")
             print("Visit: http://localhost:5000")
             app.run(debug=True, port=5000)
