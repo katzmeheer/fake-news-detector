@@ -200,8 +200,9 @@ predictor = FakeNewsPredictor()
 
 app = Flask(__name__)
 
-# Load model when app starts
-predictor = None
+predictor = FakeNewsPredictor()
+
+# Load model when app startsif
 
 
 @app.route("/", methods=["GET", "POST"])
