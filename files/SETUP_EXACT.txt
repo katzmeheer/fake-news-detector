@@ -1,0 +1,261 @@
+═══════════════════════════════════════════════════════════════════════════════
+EXACT SETUP - STEP BY STEP (No Confusion)
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: CREATE FOLDER STRUCTURE ON YOUR COMPUTER
+───────────────────────────────────────────────────────────────────────────────
+
+On your Desktop, create this exact structure:
+
+Desktop/
+└── fake-news-detector/
+    ├── app.py                  ← PUT THE PYTHON FILE HERE
+    ├── requirements.txt        ← PUT THIS HERE
+    ├── templates/
+    │   └── index.html          ← PUT THE HTML FILE HERE
+    ├── models/                 ← CREATE EMPTY FOLDER (auto-fills later)
+    └── data/                   ← CREATE EMPTY FOLDER (for datasets later)
+
+HOW TO CREATE IT:
+─────────────────
+
+On Windows:
+  1. Go to Desktop
+  2. Right-click → New Folder → Name it "fake-news-detector"
+  3. Open the folder
+  4. Right-click → New Folder → Name it "templates"
+  5. Right-click → New Folder → Name it "models"
+  6. Right-click → New Folder → Name it "data"
+
+On Mac/Linux:
+  Open Terminal and type:
+  mkdir -p ~/Desktop/fake-news-detector/{templates,models,data}
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: COPY THE 4 FILES I GAVE YOU
+───────────────────────────────────────────────────────────────────────────────
+
+You downloaded 4 files from me:
+  1. app.py
+  2. index.html
+  3. requirements.txt
+  4. SOLO_GUIDE.txt
+
+WHERE EACH FILE GOES:
+
+📁 fake-news-detector/
+   ├── ✅ app.py              ← COPY HERE (in the root folder)
+   ├── ✅ requirements.txt    ← COPY HERE (in the root folder)
+   ├── 📁 templates/
+   │   └── ✅ index.html      ← COPY HERE (inside templates folder)
+   └── 📁 models/             ← Leave empty
+
+SOLO_GUIDE.txt just keep open for reference. Don't copy it anywhere.
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: INSTALL PYTHON PACKAGES
+───────────────────────────────────────────────────────────────────────────────
+
+Open Terminal/Command Prompt and navigate to your folder:
+
+  cd Desktop/fake-news-detector
+
+Or on Windows, you can:
+  1. Hold Shift + Right-click inside the folder
+  2. Click "Open PowerShell here" or "Open Command Window here"
+
+Then type EXACTLY this:
+
+  python -m venv venv
+
+Wait for it to finish (creates a virtual environment)
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 4: ACTIVATE THE ENVIRONMENT
+───────────────────────────────────────────────────────────────────────────────
+
+On Windows (Command Prompt/PowerShell):
+  venv\Scripts\activate
+
+On Mac/Linux (Terminal):
+  source venv/bin/activate
+
+You should see (venv) appear at the start of your terminal line.
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 5: INSTALL ALL PACKAGES
+───────────────────────────────────────────────────────────────────────────────
+
+Type this in terminal:
+
+  pip install -r requirements.txt
+
+This reads requirements.txt and installs everything needed.
+
+It will download stuff (might take 2-5 minutes depending on internet).
+
+Wait until you see: "Successfully installed..."
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 6: TEST WITH DEMO DATA (5 MINUTES)
+───────────────────────────────────────────────────────────────────────────────
+
+Type this:
+
+  python app.py --demo
+
+What it does:
+  ✓ Creates fake sample data
+  ✓ Trains a model on it (takes ~1 minute)
+  ✓ Saves the model in models/ folder
+  ✓ Shows you accuracy scores
+
+Expected output:
+  ✓ Loaded 120 articles
+  ✓ Cleaned data: 120 articles
+  ✓ Splitting data...
+  ✓ Training Logistic Regression model...
+  ✓ Model trained!
+  ✓ Model saved to models/fake_news_model.pkl
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 7: START THE WEB SERVER
+───────────────────────────────────────────────────────────────────────────────
+
+Type this:
+
+  python app.py --web
+
+You'll see:
+  🌐 Starting web server...
+  Visit: http://localhost:5000
+
+Then:
+  ✅ Open your web browser
+  ✅ Go to: http://localhost:5000
+  ✅ You should see a purple interface with a text box
+  ✅ Try typing an article and click "Analyze Article"
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 8: STOP THE SERVER (When you're done testing)
+───────────────────────────────────────────────────────────────────────────────
+
+Press Ctrl+C in the terminal window where you ran the web server.
+
+═══════════════════════════════════════════════════════════════════════════════
+COMPLETE FOLDER AFTER SETUP
+───────────────────────────────────────────────────────────────────────────────
+
+After running --demo, your folder will look like:
+
+fake-news-detector/
+├── app.py
+├── requirements.txt
+├── venv/                      ← Auto-created (your environment)
+├── templates/
+│   └── index.html
+├── models/
+│   ├── fake_news_model.pkl    ← Auto-created by --demo
+│   └── fake_news_model_vectorizer.pkl
+└── data/
+    └── (empty for now)
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT THE 4 FILES DO
+═══════════════════════════════════════════════════════════════════════════════
+
+app.py
+  ├─ The MAIN Python file
+  ├─ Contains all the ML code
+  ├─ Runs the training
+  ├─ Runs the web server
+  └─ You don't edit this (unless you want to later)
+
+index.html
+  ├─ The web page (what you see in browser)
+  ├─ Has text box for article input
+  ├─ Shows prediction result
+  └─ Pretty purple design
+
+requirements.txt
+  ├─ A list of Python packages needed
+  ├─ pandas, numpy, sklearn, flask, etc.
+  └─ pip install -r requirements.txt reads this file
+
+SOLO_GUIDE.txt
+  ├─ Instructions/reference (just read it)
+  ├─ Not needed after setup
+  └─ Keep it if you forget something
+
+═══════════════════════════════════════════════════════════════════════════════
+COMMANDS CHEAT SHEET
+═══════════════════════════════════════════════════════════════════════════════
+
+ALWAYS FIRST: Activate venv
+  Windows: venv\Scripts\activate
+  Mac/Linux: source venv/bin/activate
+
+THEN use these commands:
+
+python app.py --demo
+  → Test with fake data (no Kaggle dataset needed)
+
+python app.py --web
+  → Start web server at http://localhost:5000
+
+python app.py --test "Your article text here"
+  → Test on a single article
+
+python app.py --train data/raw/fake_news.csv
+  → Train with real Kaggle data (when you download it)
+
+═══════════════════════════════════════════════════════════════════════════════
+YOUR NEXT 7 DAYS
+═══════════════════════════════════════════════════════════════════════════════
+
+Day 1-2:
+  ✓ Create folder structure
+  ✓ Copy 4 files
+  ✓ Run pip install -r requirements.txt
+  ✓ Run python app.py --demo
+  ✓ Run python app.py --web
+  ✓ Test at localhost:5000
+
+Day 3-4:
+  ✓ Go to Kaggle: https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset
+  ✓ Download the CSV
+  ✓ Create data/raw/ folder
+  ✓ Put CSV in data/raw/
+
+Day 5-6:
+  ✓ Run: python app.py --train data/raw/your_csv_file.csv
+  ✓ Wait for training (5-10 minutes)
+  ✓ Check accuracy score
+  ✓ Run: python app.py --web
+  ✓ Test predictions now work better!
+
+Day 7:
+  ✓ Start improving: better models, better UI
+  ✓ Plan for hackathon
+
+═══════════════════════════════════════════════════════════════════════════════
+IF YOU GET STUCK
+═══════════════════════════════════════════════════════════════════════════════
+
+"ModuleNotFoundError: No module named 'pandas'"
+  → Forgot to run: pip install -r requirements.txt
+  → Or forgot to activate venv
+
+"python command not found"
+  → Python not installed
+  → Go to python.org and install
+
+"http://localhost:5000 won't open"
+  → Make sure you typed: python app.py --web
+  → Check terminal - any errors?
+
+"Model not found error"
+  → You need to run: python app.py --demo first
+  → Or: python app.py --train <csv_file>
+
+═══════════════════════════════════════════════════════════════════════════════

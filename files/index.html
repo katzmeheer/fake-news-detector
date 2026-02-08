@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result.fake {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+
+        .result.real {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+
+        .result h3 {
+            margin-bottom: 10px;
+        }
+
+        .result.fake h3 {
+            color: #c62828;
+        }
+
+        .result.real h3 {
+            color: #2e7d32;
+        }
+
+        .confidence-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .confidence-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            display: none;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #c62828;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Fake News Detector</h1>
+        <p class="subtitle">Paste an article and we'll tell you if it's likely fake or real</p>
+
+        <form id="predictionForm">
+            <div class="form-group">
+                <label for="articleText">Article Text:</label>
+                <textarea 
+                    id="articleText" 
+                    placeholder="Paste the article text here..." 
+                    required
+                ></textarea>
+            </div>
+
+            <button type="submit">Analyze Article</button>
+        </form>
+
+        <div class="error" id="errorMsg"></div>
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing article...</p>
+        </div>
+
+        <div class="result" id="result">
+            <h3 id="resultLabel"></h3>
+            <p id="resultMessage"></p>
+            <div class="confidence-bar">
+                <div class="confidence-fill" id="confidenceFill"></div>
+            </div>
+            <div class="confidence-text">
+                Confidence: <span id="confidenceText">0%</span>
+            </div>
+            <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                <p>📊 Breakdown:</p>
+                <p>Fake: <span id="fakeProb">0%</span></p>
+                <p>Real: <span id="realProb">0%</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('predictionForm');
+        const articleText = document.getElementById('articleText');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const errorMsg = document.getElementById('errorMsg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const text = articleText.value.trim();
+            
+            if (text.length < 10) {
+                showError('Please enter at least 10 characters');
+                return;
+            }
+
+            // Show loading, hide previous results
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            errorMsg.style.display = 'none';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Server error');
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    showError(data.error);
+                } else {
+                    displayResult(data);
+                }
+            } catch (error) {
+                showError('Failed to connect to server: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+
+        function displayResult(data) {
+            const prediction = data.prediction;
+            const confidence = Math.round(data.confidence);
+            const fakeProb = Math.round(data.fake_probability);
+            const realProb = Math.round(data.real_probability);
+
+            // Update result display
+            const resultLabel = document.getElementById('resultLabel');
+            const resultMessage = document.getElementById('resultMessage');
+            const confidenceFill = document.getElementById('confidenceFill');
+            const confidenceText = document.getElementById('confidenceText');
+
+            if (prediction === 'FAKE') {
+                result.className = 'result fake';
+                resultLabel.textContent = '⚠️ Likely FAKE News';
+                resultMessage.textContent = 'This article shows characteristics of fake news. Be skeptical!';
+                confidenceFill.style.background = 'linear-gradient(90deg, #f44336 0%, #d32f2f 100%)';
+            } else {
+                result.className = 'result real';
+                resultLabel.textContent = '✅ Likely REAL News';
+                resultMessage.textContent = 'This article appears to be legitimate. But always verify!';
+                confidenceFill.style.background = 'linear-gradient(90deg, #4caf50 0%, #388e3c 100%)';
+            }
+
+            confidenceFill.style.width = confidence + '%';
+            confidenceText.textContent = confidence + '%';
+            document.getElementById('fakeProb').textContent = fakeProb + '%';
+            document.getElementById('realProb').textContent = realProb + '%';
+
+            result.style.display = 'block';
+        }
+
+        function showError(message) {
+            errorMsg.textContent = '❌ ' + message;
+            errorMsg.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

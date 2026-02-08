@@ -1,0 +1,165 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║               VISUAL FOLDER STRUCTURE - WHERE EVERYTHING GOES                 ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+YOUR COMPUTER (Desktop)
+│
+└── fake-news-detector/                          ← Main project folder
+    │
+    ├── app.py                                   ← MAIN PYTHON FILE (copy here)
+    │   └─ Does everything: train, predict, web server
+    │
+    ├── requirements.txt                         ← LIST OF PACKAGES (copy here)
+    │   └─ pip install -r requirements.txt reads this
+    │
+    ├── venv/                                    ← Virtual environment (auto-created)
+    │   └─ Contains all installed packages
+    │
+    ├── templates/                               ← Web interface folder (create)
+    │   │
+    │   └── index.html                           ← WEB PAGE FILE (copy here)
+    │       └─ The pretty interface you see in browser
+    │
+    ├── models/                                  ← Saved models folder (create empty)
+    │   │
+    │   ├── fake_news_model.pkl                  ← AUTO-CREATED (trained model)
+    │   │   └─ The actual AI that makes predictions
+    │   │
+    │   └── fake_news_model_vectorizer.pkl       ← AUTO-CREATED (text converter)
+    │       └─ Converts words to numbers
+    │
+    └── data/                                    ← Datasets folder (create empty)
+        │
+        └── raw/                                 ← Raw CSV files go here
+            └─ (you'll download from Kaggle later)
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                         STEP-BY-STEP FILE PLACEMENT                           ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+YOUR DOWNLOADS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ From Claude, you got 4 files:                                               │
+│                                                                             │
+│ 1. app.py              → Copy to: fake-news-detector/app.py                │
+│ 2. index.html          → Copy to: fake-news-detector/templates/index.html  │
+│ 3. requirements.txt    → Copy to: fake-news-detector/requirements.txt      │
+│ 4. SOLO_GUIDE.txt      → Just read it (don't copy anywhere)               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+DETAILED VIEW - WHAT YOU NEED TO DO:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│ Desktop/fake-news-detector/                                               │
+│ ├─ ✅ Copy app.py here                                                     │
+│ ├─ ✅ Copy requirements.txt here                                           │
+│ ├─ 📁 templates/ (create empty folder)                                    │
+│ │  └─ ✅ Copy index.html here                                             │
+│ ├─ 📁 models/ (create empty folder)                                       │
+│ │  └─ (auto-fills when you train)                                         │
+│ └─ 📁 data/ (create empty folder)                                         │
+│    └─ (for downloading Kaggle CSV later)                                  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    AFTER YOU RUN COMMANDS - FINAL STRUCTURE                   ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+After running "python app.py --demo", your folder will auto-create:
+
+fake-news-detector/
+├── app.py
+├── requirements.txt
+├── venv/                       ← Auto-created by: python -m venv venv
+│   ├── bin/ or Scripts/
+│   ├── lib/
+│   └── pyvenv.cfg
+│
+├── templates/
+│   └── index.html
+│
+├── models/
+│   ├── fake_news_model.pkl     ← Auto-created by: python app.py --demo
+│   └── fake_news_model_vectorizer.pkl
+│
+└── data/
+    └── (stays empty until you add Kaggle CSV)
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                              FILE PURPOSES                                    ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+app.py (Main Python file)
+├─ Read from: requirements.txt (to know what packages to use)
+├─ Write to: models/ (saves trained model here)
+├─ Serve: templates/index.html (sends this to browser)
+└─ Action: Train, predict, run web server
+
+index.html (Web page)
+├─ Shows: Purple interface with text box
+├─ Sends: Article text to app.py
+├─ Receives: Prediction result from app.py
+└─ Action: User types article → clicks button → see fake/real prediction
+
+requirements.txt (Package list)
+├─ Content: List of Python packages
+├─ Used by: pip install -r requirements.txt
+└─ Action: Downloads and installs everything needed
+
+fake_news_model.pkl (Trained model)
+├─ Created by: python app.py --demo (or --train)
+├─ Used by: app.py (to make predictions)
+└─ Action: Takes article text → outputs fake/real
+
+fake_news_model_vectorizer.pkl (Text converter)
+├─ Created by: python app.py --demo (or --train)
+├─ Used by: app.py (converts words to numbers)
+└─ Action: Converts article text to numbers AI can understand
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                      COPY-PASTE FOLDER CREATION COMMANDS                      ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+WINDOWS (Command Prompt or PowerShell):
+───────────────────────────────────────
+
+cd Desktop
+mkdir fake-news-detector
+cd fake-news-detector
+mkdir templates
+mkdir models
+mkdir data
+
+Then copy the 3 files (app.py, requirements.txt) to Desktop/fake-news-detector
+And copy index.html to Desktop/fake-news-detector/templates
+
+MAC/LINUX (Terminal):
+─────────────────────
+
+mkdir -p ~/Desktop/fake-news-detector/{templates,models,data}
+cd ~/Desktop/fake-news-detector
+
+Then copy the 3 files same as Windows above
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                        FINAL CHECKLIST BEFORE RUNNING                         ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+Before you run "python app.py --demo", verify:
+
+☐ Folder fake-news-detector exists on Desktop
+☐ app.py is in fake-news-detector/ (root)
+☐ requirements.txt is in fake-news-detector/ (root)
+☐ templates/ folder exists
+☐ index.html is in templates/ folder
+☐ models/ folder exists (can be empty)
+☐ data/ folder exists (can be empty)
+☐ You're in terminal in fake-news-detector/ folder
+☐ Virtual environment activated (you see (venv) in terminal)
+☐ Packages installed (ran pip install -r requirements.txt)
+
+Then you can run:
+  python app.py --demo
+
+DONE! ✅
