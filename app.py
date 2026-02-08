@@ -1,3 +1,5 @@
+
+
 """
 COMPLETE FAKE NEWS DETECTOR - All-in-One Script
 For a solo developer
@@ -20,6 +22,8 @@ import joblib
 import nltk
 from nltk.corpus import stopwords
 import string
+
+predictor = None
 
 # Web imports
 from flask import Flask, render_template, request, jsonify
@@ -199,8 +203,15 @@ predictor = FakeNewsPredictor()
 # ============================================================================
 
 app = Flask(__name__)
+try:
+    predictor = FakeNewsPredictor()
+    print("✓ Predictor loaded")
+except Exception as e:
+    predictor = None
+    print("❌ Predictor failed:", e)
 
-predictor = FakeNewsPredictor()
+
+
 
 # Load model when app startsif
 
@@ -219,7 +230,6 @@ def home():
 
     return render_template("index.html", result=result)
     """Render main page"""
-    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
